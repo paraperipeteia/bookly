@@ -14,7 +14,7 @@
 
 #show: mantys(
   name: "bookly.typ",
-  version: "1.1.0",
+  version: "1.1.1",
   authors: ("Mathieu Aucejo"),
   license: "MIT",
   description: "Write beautiful scientific book or thesis with Typst",

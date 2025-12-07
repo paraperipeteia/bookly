@@ -2,7 +2,7 @@
 #import "bookly-defaults.typ": *
 #import "bookly-helper.typ": *
 
-#let sidefigure(content, label: none, caption: none, dy: - 1.5em) = context if states.layout.get().contains("tufte") {
+#let sidefigure(content, label: none, caption: none, dy: - 1.5em) = context if states.tufte.get() {
   margin-note(
   context {
     show figure.caption: it => context {
@@ -30,7 +30,7 @@
   )#label]
 }
 
-#let fullfigure(content, caption: none, label: none) = context if states.layout.get().contains("tufte") {
+#let fullfigure(content, caption: none, label: none) = context if states.tufte.get() {
   fullwidth({
     set figure.caption(position: bottom)
     show figure.caption: it => context move(dx: 37.6%, dy: -0.75em)[
@@ -60,8 +60,8 @@
   )#label]
 }
 
-//  Code from tufte-memo - thanks @nogula
-#let sidenote(dy: -1.5em, numbered: true, content) = context if states.layout.get().contains("tufte") {
+// Code from tufte-memo - thanks @nogula
+#let sidenote(dy: -1.5em, numbered: true, content) = context if states.tufte.get() {
   if numbered {
     states.sidenotecounter.step()
     [ #super(context states.sidenotecounter.display())]
@@ -77,7 +77,7 @@
   footnote(content)
 }
 
-#let sidecite(dy: -1.5em, supplement: none, key) = context if states.layout.get().contains("tufte") {
+#let sidecite(dy: -1.5em, supplement: none, key) = context if states.tufte.get() {
   let elems = query(bibliography)
   if elems.len() > 0 {
     cite(key, supplement: supplement)
