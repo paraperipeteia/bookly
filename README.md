@@ -111,6 +111,8 @@ The template is under development. Here is the list of features that are impleme
 - [x] `modern`
 - [x] `classic`
 - [x] `orly` (O'Reilly style)
+- [x] `pretty`
+- [x] custom theme definition
 
 *Layout*
 
