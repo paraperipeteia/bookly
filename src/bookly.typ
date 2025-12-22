@@ -60,7 +60,7 @@
 
 
   // References
-  set ref(supplement: it => none)
+  set ref(supplement: none)
 
   // Citations
   show cite: it => {
@@ -150,3 +150,4 @@
 
   body
 }
+
