@@ -25,7 +25,7 @@
   states.num-pattern-fig.update("1.1a")
   states.num-pattern-eq.update("(1.1a)")
 
-  if states.tufte.get() or not states.isfrontmatter.get() {
+  if states.tufte.get() or not states.open-right.get() or not states.isfrontmatter.get() {
     counter(page).update(1)
   } else {
     counter(page).update(0)

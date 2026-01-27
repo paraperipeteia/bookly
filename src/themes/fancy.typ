@@ -9,6 +9,10 @@
 
   // Headings
   show heading.where(level: 1): it => {
+    if not states.open-right.get() {
+      pagebreak(weak: true)
+    }
+
     // Reset counters
     reset-counters
 
@@ -183,7 +187,9 @@
 
   set align(center + horizon)
 
-  pagebreak(weak: true, to:"odd")
+  if states.open-right.get() {
+    pagebreak(weak: true, to:"odd")
+  }
 
   let dxl = 0%
   let dxr = 0%
@@ -208,7 +214,9 @@
     #box[#text(fill:states.colors.get().primary)[#states.localization.get().part #states.counter-part.display(states.part-numbering.get()) -- #title]]
   ]
 
-  pagebreak(weak: true, to:"odd")
+  if states.open-right.get() {
+    pagebreak(weak: true, to:"odd")
+  }
 }
 
 // Minitoc

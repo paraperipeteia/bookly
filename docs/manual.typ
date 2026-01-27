@@ -2,7 +2,7 @@
 #import "@preview/showybox:2.0.4": *
 #import "@preview/swank-tex:0.1.0": LaTeX
 #import "@preview/cheq:0.2.2": *
-#import "@preview/bookly:1.1.3": *
+#import "../src/bookly.typ": *
 
 #show: checklist.with(fill: eastern.lighten(95%), stroke: eastern, radius: .2em)
 
@@ -13,8 +13,9 @@
 
 #show: mantys(
   name: "bookly.typ",
-  version: ":1.1.3",
-  authors: ("Mathieu Aucejo"),
+  version: "1.2.0",
+  authors: ("Mathieu Aucejo",),
+
   license: "MIT",
   description: "Write beautiful scientific book or thesis with Typst",
   repository: "https://github.com/maucejo/bookly",
@@ -23,8 +24,9 @@
   date: datetime.today(),
 
   abstract: abstract,
-  show-index: false,
+  show-index: false
 )
+
 
 = Usage
 
@@ -32,7 +34,7 @@
 
 To use the #package[bookly] template, you need to include the following line at the beginning of your `typ` file:
 #codesnippet[```typ
-#import "@preview/bookly:1.1.3": *
+#import "../src/bookly.typ": *
 ```
 ]
 
@@ -78,6 +80,7 @@ After importing #package[bookly], you have to initialize the template by a show 
 
 		Supported languages:
 		- English -- `"en"` (default)
+		- Chinese -- `"zh"`
 		- French -- `"fr"`
 		- German -- `"de"`
 		- Italian -- `"it"`
@@ -100,9 +103,9 @@ After importing #package[bookly], you have to initialize the template by a show 
 
 		#argument("title-page", default: none, types: "content")[Content of the title page.]
 
-		#colbreak()
 		#argument("config-options", default: "default-config-options", types: "dict")[Configuration options of the document. It allows a more fine-grained control of some aspects of the template. It contains the following keys:
 			- `part-numbering` #dtype(str) -- Numbering pattern (default: "1")
+			- `open-right` #dtype(bool) -- If `true`, parts start on a right-hand page (default: `true`)
 		]
 ]
 
@@ -464,7 +467,6 @@ The template provides two functions to create title pages: one for a book and on
 
 	#argument("institution", default: "Institution", types: "string")[Name of the institution.]
 
-	#colbreak()
 	#argument("series", default: "Discipline", types: "string")[Name of the series.]
 
 	#argument("year", default: "2024", types: "string")[Year of publication.]
@@ -567,25 +569,54 @@ The template provides two functions to create title pages: one for a book and on
 
 == Back cover
 
-A back cover of the document is automatically generated using the #cmd("back-cover") function, which displays information about the thesis (title and author), as well as a summary in French and English.
+A back cover of the document is automatically generated using the #cmd("back-cover") function, which displays information about the thesis (title and author), as well as a summary.
 
 #command("back-cover", ..args(
 	resume: none,
 	abstract: none,
+	abstracts: (),
 	logo: none
 ))[
-	#argument("resume", types: "content")[Summary of the document in French.]
+	#argument("abstracts", types: "dictionary")[Title and summary of the document.
+		#codesnippet[
+			```typ
+			#let abstracts-en-fr-de = (
+				(
+					title: [#set text(lang: "en", region: "gb"); Abstract:],
+					text: [#set text(lang: "en", region: "gb")
+						This paper presents the objectives, methodology, and main results of the work.
+					]
+				),
+				(
+					title: [#set text(lang: "fr"); Résumé :],
+					text: [#set text(lang: "fr")
+						Cet article présente les objectifs, la méthodologie et les principaux résultats du travail.
+					]
+				),
+				(
+					title: [#set text(lang: "de"); Zusammenfassung],
+					text: [#set text(lang: "de")
+						Diese Arbeit beschreibt die Ziele, die Methodik und die wichtigsten Ergebnisse.
+					]
+				)
+			)
 
-	#argument("abstract", types: "content")[Summary of the document in English.]
+			#back-cover(abstracts: abstracts-en-fr-de, logo: box[logo])
+			```
+		]
+	]
 
 	#argument("logo", types: array)[Logo of the back cover.
-	#codesnippet[
-		```typ
-		#let logos = (align(left)[#image("images/devise_cnam.svg", width: 45%)], align(right)[#image("images/logo_cnam.png", width: 50%)])
+		#codesnippet[
+			```typ
+			#let logos = (
+				align(left)[#image("images/devise_cnam.svg", width: 45%)],
+				align(right)[#image("images/logo_cnam.png", width: 50%)]
+			)
 
-		#back-cover(lorem(10), lorem(10), logos)
-		```
-	]
+			#back-cover(resume: lorem(10), abstract: lorem(10), logo: logos)
+			```
+		]
 	]
 ]
 
@@ -720,7 +751,7 @@ For example, to add support for Dutch, you can do the following `#states.localiz
     "defended": "defended on",
     "discipline": "Discipline:",
     "doctoral-school": "DOCTORAL SCHOOL",
-    "habiliation": "French Habilitation to supervise research",
+    "habilitation": "French Habilitation to supervise research",
     "lof": "List of figures",
     "lot": "List of tables",
     "note": "Note",
@@ -778,69 +809,80 @@ For example, to add support for Dutch, you can do the following `#states.localiz
 	`bookly` also comes with a function #cmd("reset-counters") to reset the counters for equations, figures, tables, sidenotes, and footnotes.
 ]
 
-= Roadmap
+= Dependencies
 
-The template is under development. Here is the list of features that are implemented or will be in a future version.
+The `bookly` template relies on several #Typst packages to provide additional functionalities:
 
-*Themes*
+- `drafting:0.2.2`: for tufte layout.
+- `hydra:0.6.2` : for bibliography management.
+- `equate:0.3.2` : for advanced equation numbering.
+- `showybox:2.0.4` : for custom boxes.
+- `suboutline:0.3.0` : for mini tables of contents in chapters.
+- `subpar:0.2.2` : for subfigures.
 
-- [x] `fancy`
-- [x] `modern`
-- [x] `classic`
-- [x] `orly` (O'Reilly inspired)
-- [x] `pretty`
-- [x] User-defined themes (requires a refactoring of the theming)
+// = Roadmap
 
-*Layout*
+// The template is under development. Here is the list of features that are implemented or will be in a future version.
 
-- [x] Standard layout
-- [x] Tufte layout
-// - [ ] User-defined paper and margins for `standard` and `tufte` layouts
+// *Themes*
 
-*Cover pages*
+// - [x] `fancy`
+// - [x] `modern`
+// - [x] `classic`
+// - [x] `orly` (O'Reilly inspired)
+// - [x] `pretty`
+// - [x] User-defined themes (requires a refactoring of the theming)
 
-- [x] Title page
-- [x] Back cover
+// *Layout*
 
-*Environments*
+// - [x] Standard layout
+// - [x] Tufte layout
+// // - [ ] User-defined paper and margins for `standard` and `tufte` layouts
 
-- [x] Creation of the `front-matter` environment
-- [x] Creation of the `main-matter` environment
-- [x] Creation of the `appendix` environment
+// *Cover pages*
 
-*Parts and chapters*
-- [x] Creation of a document `part` -- #cmd("part")
-- [x] Creation of a document `chapter` -- #cmd("chapter")
-- [x] Creation of an unnumbered `chapter` -- #cmd("chapter-nonum")
+// - [x] Title page
+// - [x] Back cover
 
-*Tables of contents*
+// *Environments*
 
-- [x] Creation of the table of contents -- #cmd("tableofcontents")
-- [x] Creation of the list of figures -- #cmd("listoffigures")
-- [x] Creation of the list of tables -- #cmd("listoftables")
-- [x] Creation of a mini table of contents at the beginning of chapters using the `suboutline` package (see #link("https://typst.app/universe/package/minitoc", text("link", fill: typst-color)))
-- [x] Customization of entries (appearance, hyperlink) by modifying the `outline.entry` element
-- [x] Localization of the different tables
+// - [x] Creation of the `front-matter` environment
+// - [x] Creation of the `main-matter` environment
+// - [x] Creation of the `appendix` environment
 
-*Figures and tables*
+// *Parts and chapters*
+// - [x] Creation of a document `part` -- #cmd("part")
+// - [x] Creation of a document `chapter` -- #cmd("chapter")
+// - [x] Creation of an unnumbered `chapter` -- #cmd("chapter-nonum")
 
-- [x] Customization of the appearance of figure and table captions depending on the context (chapter or appendix)
-- [x] Short titles for the lists of figures and tables
-- [x] Creation of the #cmd("subfigure") function for subfigures via the `subpar` package
+// *Tables of contents*
 
-*Equations*
+// - [x] Creation of the table of contents -- #cmd("tableofcontents")
+// - [x] Creation of the list of figures -- #cmd("listoffigures")
+// - [x] Creation of the list of tables -- #cmd("listoftables")
+// - [x] Creation of a mini table of contents at the beginning of chapters using the `suboutline` package (see #link("https://typst.app/universe/package/minitoc", text("link", fill: typst-color)))
+// - [x] Customization of entries (appearance, hyperlink) by modifying the `outline.entry` element
+// - [x] Localization of the different tables
 
-- [x] Adaptation of equation numbering depending on the context (chapter or appendix)
-- [x] Creation of a function to highlight important equations -- #cmd("boxeq")
-- [x] Creation of a function to define equations without numbering -- #cmd("nonumeq")
-- [x] Use of the `equate` package to number equations in a system like (1.1a)
+// *Figures and tables*
 
-*Boxes*
+// - [x] Customization of the appearance of figure and table captions depending on the context (chapter or appendix)
+// - [x] Short titles for the lists of figures and tables
+// - [x] Creation of the #cmd("subfigure") function for subfigures via the `subpar` package
 
-- [x] Creation of information boxes to highlight important content
+// *Equations*
 
-*Bibliography*
+// - [x] Adaptation of equation numbering depending on the context (chapter or appendix)
+// - [x] Creation of a function to highlight important equations -- #cmd("boxeq")
+// - [x] Creation of a function to define equations without numbering -- #cmd("nonumeq")
+// - [x] Use of the `equate` package to number equations in a system like (1.1a)
 
-- [x] Verification of the reference list via `bibtex`
-- [x] Same for `hayagriva` (see #link("https://github.com/typst/hayagriva/blob/main/docs/file-format.md", text("documentation", fill: typst-color)))
+// *Boxes*
+
+// - [x] Creation of information boxes to highlight important content
+
+// *Bibliography*
+
+// - [x] Verification of the reference list via `bibtex`
+// - [x] Same for `hayagriva` (see #link("https://github.com/typst/hayagriva/blob/main/docs/file-format.md", text("documentation", fill: typst-color)))
 

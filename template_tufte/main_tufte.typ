@@ -1,6 +1,4 @@
-#import "@preview/bookly:1.1.3": *
-// #import "../src/bookly.typ": *
-// #import "custom-theme.typ": *
+#import "../src/bookly.typ": *
 
 #let config-colors = (
   primary: rgb("#1d90d0"),
@@ -25,6 +23,9 @@
     institution: "Typst community",
     logo: image("images/typst-logo.svg"),
     cover: image("images/book-cover.jpg", width: 45%)
+  ),
+  config-options: (
+    open-right: false,
   )
 )
 
@@ -53,4 +54,20 @@
 // #bibliography("bibliography/sample.yml")
 #bibliography("bibliography/sample.bib")
 
-#back-cover(resume: lorem(100), abstract: lorem(100), logo: (align(left)[#image("images/typst-logo.svg", width: 50%)], align(right)[#image("images/typst-logo.svg", width: 50%)]))
+#let abstracts-fr-en = (
+  (
+    title: [#set text(lang: "fr"); Résumé],
+    text: [#lorem(100)]
+  ),
+  (
+    title: [#set text(lang: "en", region: "gb"); Abstract],
+    text: [#lorem(100)]
+  ),
+)
+
+#let logos = (
+  align(left)[#image("images/typst-logo.svg", width: 50%)],
+  align(right)[#image("images/typst-logo.svg", width: 50%)]
+)
+
+#back-cover(abstracts: abstracts-fr-en, logo: logos)

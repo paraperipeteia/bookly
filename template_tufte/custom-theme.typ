@@ -1,5 +1,5 @@
 
-#import "@preview/bookly:1.1.3": *
+#import "../src/bookly.typ": *
 // #import "../src/bookly.typ": *
 
 #let custom(colors: default-colors, it) = {

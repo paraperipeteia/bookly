@@ -18,6 +18,7 @@
   num-pattern-eq: state("num-pattern-eq", "(1.1)"),
   num-pattern-fig: state("num-pattern-fig", "1.1"),
   num-pattern-subfig: state("num-pattern-subfig", "1.1a"),
+  open-right: state("open-right", true),
   page-numbering: state("page-numbering", "1/1"),
   part-numbering: state("part-numbering", "1"),
   sidenotecounter: counter("sidenotecounter"),
@@ -29,6 +30,7 @@
 
 #let default-config-options = (
   part-numbering: "1",
+  open-right: true,
 )
 
 #let default-fonts = (

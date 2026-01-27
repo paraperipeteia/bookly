@@ -28,12 +28,14 @@
   states.title.update(title)
   states.tufte.update(tufte)
 
+
   // Book colors
   let book-colors = default-colors + colors
   states.colors.update(book-colors)
 
   // Configuration options
   let book-options = default-config-options + config-options
+  states.open-right.update(book-options.open-right)
   states.part-numbering.update(book-options.part-numbering)
 
   // Fonts
@@ -123,7 +125,6 @@
   }
 
   // Page properties for tufte layout
-  set-page-properties()
   if tufte {
     set-margin-note-defaults(
       stroke: none,
@@ -144,7 +145,11 @@
 
   // Headings
   show: theme.with(colors: book-colors)
-  show: headings-on-odd-page
+  show: show-if(book-options.open-right, it => {
+    show: headings-on-odd-page
+    it
+  })
+
   // Unnumbered sections - Thanks to @bluss (Typst universe: How to have headings without numbers in a fluent way?)
   show selector(<nonum-sec>): set heading(numbering: none)
 

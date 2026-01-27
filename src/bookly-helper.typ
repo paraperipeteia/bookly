@@ -141,7 +141,10 @@ set align(center)
       footer: none,
       margin: auto
     )
-    pagebreak(to: "odd")
+
+    if states.open-right.get() {
+      pagebreak(to: "odd")
+    }
 
     align(center + horizon)[
       #text(size: 3em)[*#states.title.get()*]
@@ -184,7 +187,7 @@ set align(center)
   laboratory: "Laboratory name",
   defense-date: "01 January 1970",
   discipline: "Discipline",
-  specialty: "Speciality",
+  specialty: "Specialty",
   committee: (:),
   logo: none
 ) = context {
@@ -315,10 +318,13 @@ set align(center)
 }
 
 // Back cover
-#let back-cover(resume: none, abstract: none, logo: none) = {
+#let back-cover(abstracts: (), logo: none) = context{
   set page(margin: auto, header: none, footer: none)
 
-  pagebreak(to: "even", weak: true)
+  if states.open-right.get() {
+    pagebreak(to: "even", weak: true)
+  }
+
   set align(horizon)
 
   if logo != none {
@@ -338,7 +344,8 @@ set align(center)
       #v(1em)
     ]
   }
-  if resume != none {
+
+  for abstract in abstracts {
     context{
       block(
         width: 100%,
@@ -347,20 +354,7 @@ set align(center)
         radius: 0.5em,
         below: 2em
       )[
-        #text([*Résumé : * #resume], size: 0.9em)
-      ]
-    }
-  }
-
-  if abstract != none {
-    context{
-      block(
-        width: 100%,
-        stroke: 1pt + states.colors.get().primary,
-        inset: 1em,
-        radius: 0.5em,
-        )[
-        #text([*Abstract : * #abstract], size: 0.9em)
+        #text([*#abstract.title * #abstract.text], size: 0.9em)
       ]
     }
   }

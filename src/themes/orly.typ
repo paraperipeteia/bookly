@@ -7,6 +7,10 @@
   states.theme.update("orly")
 
   show heading.where(level:1): it => {
+    if not states.open-right.get() {
+      pagebreak(weak: true)
+    }
+
     // Reset counters
     reset-counters
 
@@ -130,7 +134,9 @@
 
   set align(top + right)
 
-  pagebreak(weak: true, to:"odd")
+  if states.open-right.get() {
+    pagebreak(weak: true, to:"odd")
+  }
 
   let dx = 0%
   if states.tufte.get() {
@@ -155,7 +161,9 @@
     #box[*#upper[#states.localization.get().part] #states.counter-part.display(states.part-numbering.get()) -- #title*]
   ]
 
-  pagebreak(weak: true, to:"odd")
+  if states.open-right.get() {
+    pagebreak(weak: true, to:"odd")
+  }
 }
 
 #let minitoc-orly = context {
