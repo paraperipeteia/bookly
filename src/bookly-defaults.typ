@@ -26,7 +26,7 @@
   tufte: state("tufte", false),
 )
 
-#let default-language = ("en", "de", "fr",  "es", "it", "pt")
+#let default-language = ("en", "de", "fr",  "es", "it", "pt", "zh")
 
 #let default-config-options = (
   part-numbering: "1",

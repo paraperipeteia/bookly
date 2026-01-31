@@ -18,7 +18,7 @@
   // theme: orly,
   // theme: pretty,
   // tufte: true,
-  // lang: "fr",
+  lang: "zh",
   // colors: config-colors,
   title-page: book-title-page(
     series: "Typst book series",
@@ -27,7 +27,7 @@
     cover: image("images/book-cover.jpg", width: 45%)
   ),
   config-options: (
-    open-right: true,
+    open-right: false,
   )
 )
 
