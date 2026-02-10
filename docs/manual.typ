@@ -38,6 +38,14 @@ To use the #package[bookly] template, you need to include the following line at 
 ```
 ]
 
+#warning-alert[
+In `bookly`, the supplement of the `ref` function is set to "none" by default to avoid unexpected behavior when referencing more than one item. However, you can revert this setting by using the following syntax after the template definition:
+#codesnippet[
+  ```typ
+  #set ref(supplement: auto)
+  ```
+]]
+
 == Initializing the template
 
 After importing #package[bookly], you have to initialize the template by a show rule with the #cmd[bookly] command. This function takes an optional argument to specify the title of the document.
